@@ -7,7 +7,7 @@
 
 **Front-end:** React, Typescript, TailwindCSS. Shadcn/UI
 
-**Back-end:** Rust, Axum, Tokyo, PostgreSQL, Redis
+**Back-end:** NodeJs (Typescript), Fastify, SQLite, Redis
 
 ## Version History
 - 0.1 (In Development)
