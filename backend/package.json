@@ -4,7 +4,8 @@
   "description": "A football simulation/management game.",
   "main": "server.ts",
   "scripts": {
-    "dev": "node --env-file=.env --import=tsx --watch ./src/index.ts"
+    "dev": "node --env-file=.env --import=tsx --watch ./src/index.ts",
+    "migration": "node --env-file=.env --import=tsx ./scripts/run-migrations.ts"
   },
   "keywords": [
     "Server-Side",
