@@ -1,8 +1,11 @@
 import fastify from "./fastify";
 import logger from "./config/logger";
+import connectDatabase from "./config/database";
 
 const startServer = async () => {  
   try {
+    await connectDatabase();
+
     fastify.listen({ port: 3000 }, (error, address) => {
       if (error) {
         logger.error(`fastify failed to start: ${error}`);
