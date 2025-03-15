@@ -1,18 +1,18 @@
 -- CreateTable
-CREATE TABLE "SeedStatus" (
+CREATE TABLE "seed_status" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "seeded" INTEGER NOT NULL DEFAULT 0,
     "created_at" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 -- CreateTable
-CREATE TABLE "GameState" (
+CREATE TABLE "game_state" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "date" TEXT NOT NULL
 );
 
 -- CreateTable
-CREATE TABLE "Stadium" (
+CREATE TABLE "stadium" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "city" TEXT NOT NULL,
     "name" TEXT NOT NULL,
@@ -21,7 +21,7 @@ CREATE TABLE "Stadium" (
 );
 
 -- CreateTable
-CREATE TABLE "Nation" (
+CREATE TABLE "nation" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "name" TEXT NOT NULL,
     "code" TEXT NOT NULL,
@@ -34,7 +34,7 @@ CREATE TABLE "Nation" (
 );
 
 -- CreateTable
-CREATE TABLE "Club" (
+CREATE TABLE "club" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "name" TEXT NOT NULL,
     "founded_yeart" INTEGER,
@@ -51,7 +51,7 @@ CREATE TABLE "Club" (
 );
 
 -- CreateTable
-CREATE TABLE "Season" (
+CREATE TABLE "season" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "name" TEXT NOT NULL,
     "start_date" TEXT NOT NULL,
@@ -59,7 +59,7 @@ CREATE TABLE "Season" (
 );
 
 -- CreateTable
-CREATE TABLE "ClubTransactions" (
+CREATE TABLE "club_transactions" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "type" TEXT NOT NULL,
     "date" TEXT,
@@ -69,7 +69,7 @@ CREATE TABLE "ClubTransactions" (
 );
 
 -- CreateTable
-CREATE TABLE "Titles" (
+CREATE TABLE "titles" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "name" TEXT,
     "club_id" INTEGER NOT NULL,
@@ -77,7 +77,7 @@ CREATE TABLE "Titles" (
 );
 
 -- CreateTable
-CREATE TABLE "Competition" (
+CREATE TABLE "competition" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "name" TEXT,
     "type" TEXT,
@@ -87,7 +87,7 @@ CREATE TABLE "Competition" (
 );
 
 -- CreateTable
-CREATE TABLE "ClubHasCompetition" (
+CREATE TABLE "club_has_competition" (
     "club_id" INTEGER NOT NULL,
     "competition_id" INTEGER NOT NULL,
 
@@ -97,7 +97,7 @@ CREATE TABLE "ClubHasCompetition" (
 );
 
 -- CreateTable
-CREATE TABLE "ClubCompetitionStats" (
+CREATE TABLE "club_competition_stats" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "club_id" INTEGER NOT NULL,
     "competition_id" INTEGER NOT NULL,
@@ -113,7 +113,7 @@ CREATE TABLE "ClubCompetitionStats" (
 );
 
 -- CreateTable
-CREATE TABLE "Matches" (
+CREATE TABLE "matches" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "match_date" TEXT,
     "home_score" INTEGER,
@@ -124,7 +124,7 @@ CREATE TABLE "Matches" (
 );
 
 -- CreateTable
-CREATE TABLE "MatchesHasClub" (
+CREATE TABLE "matches_has_club" (
     "matches_id" INTEGER NOT NULL,
     "club_id" INTEGER NOT NULL,
 
@@ -134,7 +134,7 @@ CREATE TABLE "MatchesHasClub" (
 );
 
 -- CreateTable
-CREATE TABLE "Player" (
+CREATE TABLE "player" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "first_name" TEXT NOT NULL,
     "last_name" TEXT NOT NULL,
@@ -170,7 +170,7 @@ CREATE TABLE "Player" (
 );
 
 -- CreateTable
-CREATE TABLE "PlayerContract" (
+CREATE TABLE "player_contract" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "salary" REAL,
     "start_date" TEXT,
@@ -182,7 +182,7 @@ CREATE TABLE "PlayerContract" (
 );
 
 -- CreateTable
-CREATE TABLE "PlayerStats" (
+CREATE TABLE "player_stats" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "goals" INTEGER,
     "assists" INTEGER,
@@ -205,7 +205,7 @@ CREATE TABLE "PlayerStats" (
 );
 
 -- CreateTable
-CREATE TABLE "PlayerInjury" (
+CREATE TABLE "player_injury" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "type" TEXT,
     "start_date" TEXT,
@@ -215,7 +215,7 @@ CREATE TABLE "PlayerInjury" (
 );
 
 -- CreateTable
-CREATE TABLE "Coach" (
+CREATE TABLE "coach" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "first_name" TEXT,
     "last_name" TEXT,
@@ -229,7 +229,7 @@ CREATE TABLE "Coach" (
 );
 
 -- CreateTable
-CREATE TABLE "CoachContract" (
+CREATE TABLE "coach_contract" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "salary" REAL,
     "start_date" TEXT,
