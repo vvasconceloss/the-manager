@@ -1,47 +1,70 @@
+import NationService from "./nation.service";
 import attributesRange from "../data/attributes-range";
 
 type Position = keyof typeof attributesRange;
 
 class PlayerService {
-  static generateAttributeValue(attributeWeigth: number) {
-    const minimumAttribute = Math.max(1, Math.round((attributeWeigth / 10) * 15));
+  private static generateRandomValue(minValue: number, maxValue: number): number { return Math.floor(Math.random() * (maxValue - minValue + 1)) + minValue; }
+
+  static generateAttributeValue(attributeWeight: number): number {
+    const minimumAttribute = Math.max(1, Math.round((attributeWeight / 10) * 15));
     const maximumAttribute = Math.min(20, minimumAttribute + 5);
 
     return Math.floor(Math.random() * (maximumAttribute - minimumAttribute + 1)) + minimumAttribute;
   }
 
-  static generateAttributes(position: Position) {
-    const playerAttribute: Record<string, number> = {};
+  static generateAttributes(position: Position): Record<string, number> {
+    const playerAttributes: Record<string, number> = {};
 
     for (const attribute in attributesRange[position]) {
       const attributeKey = attribute as keyof typeof attributesRange[Position];
-      playerAttribute[attribute] = this.generateAttributeValue(attributesRange[position][attributeKey]);
+      playerAttributes[attribute] = this.generateAttributeValue(attributesRange[position][attributeKey]);
     }
 
-    return playerAttribute;
+    return playerAttributes;
   }
 
-  static generateCurrentAbility(playerAttribute: Record<string, number>, position: Position) {
-    let weightedSum: number = 0;
-    const positionWeight = attributesRange[position];
+  static generateCurrentAbility(playerAttributes: Record<string, number>, position: Position): number {
+    let weightedSum = 0;
+    const positionWeights = attributesRange[position];
 
-    for (const attribute in playerAttribute) {
-      const attributeWeight = positionWeight[attribute as keyof typeof positionWeight];
-      weightedSum += playerAttribute[attribute] * attributeWeight;
+    for (const attribute in playerAttributes) {
+      const attributeWeight = positionWeights[attribute as keyof typeof positionWeights];
+      weightedSum += playerAttributes[attribute] * attributeWeight;
     }
 
-    const maximumCurrentAbility = 20 * Object.values(positionWeight).reduce((sum, weight) => sum + weight, 0);
+    const maximumCurrentAbility = 20 * Object.values(positionWeights).reduce((sum, weight) => sum + weight, 0);
     const currentAbility = Math.round((weightedSum / maximumCurrentAbility) * 250);
-    const clampedCurrentAbility = Math.min(Math.max(currentAbility, 1), 200);
 
-    return clampedCurrentAbility;
+    return Math.min(Math.max(currentAbility, 1), 200);
   }
 
-  static generateOverall(currentAbility: number) { 
+  static generateOverall(currentAbility: number): number {
     const baseValue = 100;
     const exponent = 0.75;
 
     return Math.round(baseValue * Math.pow(currentAbility / 200, exponent));
+  }
+
+  static async generatePotentialAbility(nation: string): Promise<{ potentialAbility: number }> {
+    const nationsYouthRating = await NationService.getNationsYouthRating();
+    const youthRating = nationsYouthRating[nation] || 50;
+
+    let basePotentialAbility = Math.floor(youthRating + (Math.random() * 40 - 20));
+    let potentialAbility: number;
+
+    const chanceToBeWonderkid = youthRating / 2;
+    if (Math.random() * 100 < chanceToBeWonderkid) {
+      potentialAbility = this.generateRandomValue(160, 200);
+    } else {
+      const minimumPotentialAbility = Math.max(50, basePotentialAbility - 30);
+      const maximumPotentialAbility = Math.min(180, basePotentialAbility + 30);
+      potentialAbility = this.generateRandomValue(minimumPotentialAbility, maximumPotentialAbility);
+    }
+
+    if (Math.random() < 0.02) { potentialAbility = this.generateRandomValue(180, 200); }
+
+    return { potentialAbility };
   }
 }
 
