@@ -26,8 +26,8 @@ class PlayerService {
     const positionWeight = attributesRange[position];
 
     for (const attribute in playerAttribute) {
-        const attributeWeight = positionWeight[attribute as keyof typeof positionWeight];
-        weightedSum += playerAttribute[attribute] * attributeWeight;
+      const attributeWeight = positionWeight[attribute as keyof typeof positionWeight];
+      weightedSum += playerAttribute[attribute] * attributeWeight;
     }
 
     const maximumCurrentAbility = 20 * Object.values(positionWeight).reduce((sum, weight) => sum + weight, 0);
@@ -35,6 +35,13 @@ class PlayerService {
     const clampedCurrentAbility = Math.min(Math.max(currentAbility, 1), 200);
 
     return clampedCurrentAbility;
+  }
+
+  static generateOverall(currentAbility: number) { 
+    const baseValue = 100;
+    const exponent = 0.75;
+
+    return Math.round(baseValue * Math.pow(currentAbility / 200, exponent));
   }
 }
 
