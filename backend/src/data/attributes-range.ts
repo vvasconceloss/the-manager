@@ -1,65 +1,64 @@
-const attributesRange: any = {
-  "GK": {
-    finishing: [1, 5], crossing: [1, 5], dribbling: [1, 5], heading: [1, 5], tackling: [1, 5], marking: [1, 5], passing: [8, 12], free_kick: [1, 5],
-    acceleration: [6, 12], agility: [6, 12], strength: [10, 16], jumping: [12, 20],
-    vision: [8, 12], decision: [12, 20], positioning: [12, 20], antecipation: [12, 18], aggression: [5, 10],
-    reflexes: [15, 20], handling: [15, 20], diving: [15, 20]
+const attributesRange = {
+  GK: {
+    finishing: 0, crossing: 0, dribbling: 0, heading: 1, tackling: 1, marking: 0, passing: 2, free_kick: 0,
+    acceleration: 3, agility: 3, strength: 4, jumping: 5,
+    vision: 2, decision: 5, positioning: 5, anticipation: 4, aggression: 2,
+    reflexes: 8, handling: 8, diving: 8
   },
-  "CB": {
-    finishing: [1, 5], crossing: [1, 5], dribbling: [3, 10], heading: [10, 18], tackling: [12, 20], marking: [12, 20], passing: [8, 15], free_kick: [1, 5],
-    acceleration: [8, 15], agility: [8, 15], strength: [12, 20], jumping: [12, 20],
-    vision: [6, 12], decision: [10, 18], positioning: [12, 18], antecipation: [10, 18], aggression: [10, 18],
-    reflexes: [6, 12], handling: [1, 5], diving: [3, 8]
+  CB: {
+    finishing: 0, crossing: 1, dribbling: 1, heading: 5, tackling: 7, marking: 7, passing: 3, free_kick: 0,
+    acceleration: 3, agility: 3, strength: 7, jumping: 7,
+    vision: 2, decision: 4, positioning: 6, anticipation: 5, aggression: 5,
+    reflexes: 2, handling: 0, diving: 1
   },
-  "RB": {
-    finishing: [3, 10], crossing: [10, 18], dribbling: [10, 18], heading: [8, 15], tackling: [10, 18], marking: [10, 18], passing: [10, 18], free_kick: [1, 5],
-    acceleration: [10, 20], agility: [10, 20], strength: [8, 18], jumping: [10, 18],
-    vision: [10, 16], decision: [10, 16], positioning: [10, 18], antecipation: [12, 18], aggression: [10, 16],
-    reflexes: [5, 10], handling: [1, 5], diving: [3, 8]
+  RB: {
+    finishing: 2, crossing: 7, dribbling: 6, heading: 4, tackling: 5, marking: 5, passing: 6, free_kick: 1,
+    acceleration: 8, agility: 8, strength: 5, jumping: 5,
+    vision: 5, decision: 4, positioning: 5, anticipation: 5, aggression: 4,
+    reflexes: 1, handling: 0, diving: 1
   },
-  "LB": {
-    finishing: [3, 10], crossing: [10, 18], dribbling: [10, 18], heading: [8, 15], tackling: [10, 18], marking: [10, 18], passing: [10, 18], free_kick: [1, 5],
-    acceleration: [10, 20], agility: [10, 20], strength: [8, 18], jumping: [10, 18],
-    vision: [10, 16], decision: [10, 16], positioning: [10, 18], antecipation: [12, 18], aggression: [10, 16],
-    reflexes: [5, 10], handling: [1, 5], diving: [3, 8]
+  LB: {
+    finishing: 2, crossing: 7, dribbling: 6, heading: 4, tackling: 5, marking: 5, passing: 6, free_kick: 1,
+    acceleration: 8, agility: 8, strength: 5, jumping: 5,
+    vision: 5, decision: 4, positioning: 5, anticipation: 5, aggression: 4,
+    reflexes: 1, handling: 0, diving: 1
   },
-  "CDM": {
-    finishing: [3, 10], crossing: [3, 10], dribbling: [5, 15], heading: [8, 15], tackling: [12, 20], marking: [10, 18], passing: [10, 18], free_kick: [3, 10],
-    acceleration: [10, 16], agility: [8, 15], strength: [10, 18], jumping: [10, 18],
-    vision: [10, 18], decision: [10, 18], positioning: [10, 18], antecipation: [10, 18], aggression: [10, 18],
-    reflexes: [5, 10], handling: [1, 5], diving: [3, 8]
+  CDM: {
+    finishing: 2, crossing: 2, dribbling: 3, heading: 4, tackling: 7, marking: 6, passing: 7, free_kick: 2,
+    acceleration: 5, agility: 4, strength: 6, jumping: 5,
+    vision: 6, decision: 6, positioning: 6, anticipation: 6, aggression: 6,
+    reflexes: 1, handling: 0, diving: 1
   },
-  "CM": {
-    finishing: [6, 15], crossing: [5, 15], dribbling: [10, 18], heading: [5, 10], tackling: [8, 15], marking: [8, 15], passing: [12, 20], free_kick: [3, 10],
-    acceleration: [8, 15], agility: [10, 18], strength: [8, 16], jumping: [10, 15],
-    vision: [10, 20], decision: [10, 20], positioning: [10, 18], antecipation: [10, 18], aggression: [5, 10],
-    reflexes: [3, 8], handling: [1, 5], diving: [3, 8]
+  CM: {
+    finishing: 4, crossing: 4, dribbling: 6, heading: 3, tackling: 4, marking: 4, passing: 8, free_kick: 3,
+    acceleration: 5, agility: 6, strength: 4, jumping: 4,
+    vision: 7, decision: 7, positioning: 5, anticipation: 5, aggression: 3,
+    reflexes: 1, handling: 0, diving: 1
   },
-  "CAM": {
-    finishing: [10, 18], crossing: [5, 15], dribbling: [12, 20], heading: [5, 10], tackling: [4, 10], marking: [4, 10], passing: [12, 20], free_kick: [8, 15],
-    acceleration: [10, 18], agility: [10, 20], strength: [8, 16], jumping: [8, 15],
-    vision: [12, 20], decision: [10, 18], positioning: [10, 18], antecipation: [10, 18], aggression: [5, 12],
-    reflexes: [3, 8], handling: [1, 5], diving: [3, 8]
+  CAM: {
+    finishing: 6, crossing: 4, dribbling: 8, heading: 2, tackling: 2, marking: 2, passing: 8, free_kick: 5,
+    acceleration: 6, agility: 7, strength: 4, jumping: 3,
+    vision: 8, decision: 6, positioning: 5, anticipation: 5, aggression: 3,
+    reflexes: 1, handling: 0, diving: 1
   },
-  "LW": {
-    finishing: [10, 18], crossing: [10, 20], dribbling: [12, 20], heading: [4, 10], tackling: [5, 10], marking: [5, 10], passing: [10, 18], free_kick: [5, 10],
-    acceleration: [12, 20], agility: [12, 20], strength: [8, 16], jumping: [10, 18],
-    vision: [10, 18], decision: [12, 20], positioning: [10, 18], antecipation: [10, 18], aggression: [5, 12],
-    reflexes: [3, 8], handling: [1, 5], diving: [3, 8]
+  LW: {
+    finishing: 7, crossing: 8, dribbling: 9, heading: 2, tackling: 2, marking: 2, passing: 7, free_kick: 4,
+    acceleration: 9, agility: 9, strength: 4, jumping: 4,
+    vision: 6, decision: 7, positioning: 5, anticipation: 5, aggression: 3,
+    reflexes: 1, handling: 0, diving: 1
   },
-  "RW": {
-    finishing: [10, 18], crossing: [10, 20], dribbling: [12, 20], heading: [4, 10], tackling: [5, 10], marking: [5, 10], passing: [10, 18], free_kick: [5, 10],
-    acceleration: [12, 20], agility: [12, 20], strength: [8, 16], jumping: [10, 18],
-    vision: [10, 18], decision: [12, 20], positioning: [10, 18], antecipation: [10, 18], aggression: [5, 12],
-    reflexes: [3, 8], handling: [1, 5], diving: [3, 8]
+  RW: {
+    finishing: 7, crossing: 8, dribbling: 9, heading: 2, tackling: 2, marking: 2, passing: 7, free_kick: 4,
+    acceleration: 9, agility: 9, strength: 4, jumping: 4,
+    vision: 6, decision: 7, positioning: 5, anticipation: 5, aggression: 3,
+    reflexes: 1, handling: 0, diving: 1
   },
-  "ST": {
-    finishing: [12, 20], crossing: [1, 5], dribbling: [8, 15], heading: [10, 18],
-    tackling: [5, 10], marking: [5, 10], passing: [8, 15], free_kick: [1, 5],
-    acceleration: [10, 20], agility: [10, 18], strength: [12, 20], jumping: [10, 18],
-    vision: [8, 15], decision: [10, 18], positioning: [12, 20], antecipation: [10, 18], aggression: [8, 15],
-    reflexes: [3, 8], handling: [1, 5], diving: [3, 8]
+  ST: {
+    finishing: 9, crossing: 1, dribbling: 6, heading: 6, tackling: 2, marking: 2, passing: 5, free_kick: 1,
+    acceleration: 8, agility: 7, strength: 7, jumping: 6,
+    vision: 5, decision: 6, positioning: 8, anticipation: 6, aggression: 5,
+    reflexes: 1, handling: 0, diving: 1
   }
-}
+};
 
 export default attributesRange;
