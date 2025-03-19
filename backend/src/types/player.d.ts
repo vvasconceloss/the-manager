@@ -1,5 +1,4 @@
 export type Player = {
-  id: number,
   first_name: string,
   last_name: string,
   birth_date: string,
@@ -28,7 +27,6 @@ export type Player = {
   reflexes: number,
   handling: number,
   diving: number,
-  fatigue: number,
   nation_id: number
 }
 
