@@ -2,6 +2,20 @@ import connectDatabase from "../config/database";
 import type { Player, PlayerContract } from "../types/player";
 
 class PlayerModel {
+  static fetchInformation = async (playerId: number) => {
+    const databaseInstance = await connectDatabase();
+    const databaseStatement = databaseInstance.prepare(`
+      SELECT 
+        player.*,
+        nation.image_federation AS nation
+      FROM player
+      LEFT JOIN nation ON nation.id = player.nation_id
+      WHERE player.id = ?
+    `);
+
+    return databaseStatement.get(playerId);
+  }
+
   static insertPlayer = async (player: Player) => {
     const databaseInstance = await connectDatabase();
     const databaseStatement = databaseInstance.prepare(`
@@ -21,7 +35,7 @@ class PlayerModel {
       player.first_name, player.last_name, player.birth_date, player.position, player.market_value, player.current_ability,
       player.potential_ability, player.overall, player.finishing, player.crossing, player.dribbling, player.heading,
       player.tackling, player.marking, player.passing, player.free_kick, player.acceleration, player.agility,
-      player.strength, player.jumping, player.vision, player.decision, player.position, player.antecipation,
+      player.strength, player.jumping, player.vision, player.decision, player.positioning, player.antecipation,
       player.aggression, player.reflexes, player.handling, player.diving, player.nation_id, 0
     );
     return insertPlayerResult;
