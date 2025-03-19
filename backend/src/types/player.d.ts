@@ -31,7 +31,6 @@ export type Player = {
 }
 
 export type PlayerContract = {
-  id: number,
   salary: number,
   start_date: string,
   end_date: string,
