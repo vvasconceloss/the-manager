@@ -37,7 +37,7 @@ CREATE TABLE "nation" (
 CREATE TABLE "club" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "name" TEXT NOT NULL,
-    "founded_yeart" INTEGER,
+    "founded_year" INTEGER,
     "reputation" INTEGER NOT NULL,
     "balance" REAL,
     "budget" REAL,
