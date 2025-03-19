@@ -1,4 +1,8 @@
 import NationService from "./nation.service";
+import type { Player } from "../types/player";
+import { Faker, faker } from "@faker-js/faker";
+import PlayerModel from "../models/player.model";
+import fakerLocales from "../data/faker-locations";
 import attributesRange from "../data/attributes-range";
 
 type Position = keyof typeof attributesRange;
@@ -46,6 +50,15 @@ class PlayerService {
     return Math.round(baseValue * Math.pow(currentAbility / 200, exponent));
   }
 
+  static generateInformation(fakerInstance: Faker) {
+    const firstName = fakerInstance.person.firstName("male");
+    const lastName = fakerInstance.person.lastName("male");
+    const birthDate = fakerInstance.date.birthdate({ mode: 'age', min: 16, max: 40 });
+    const marketValue = Math.round(parseFloat((Math.random() * 100000000).toFixed(2)));
+
+    return { firstName, lastName, birthDate, marketValue }
+  }
+
   static async generatePotentialAbility(nation: string): Promise<{ potentialAbility: number }> {
     const nationsYouthRating = await NationService.getNationsYouthRating();
     const youthRating = nationsYouthRating[nation] || 50;
@@ -65,6 +78,38 @@ class PlayerService {
     if (Math.random() < 0.02) { potentialAbility = this.generateRandomValue(180, 200); }
 
     return { potentialAbility };
+  }
+
+  static async generatePlayerData(nation: string, nation_id: number, position: Position) {
+    const getFakerByNation = (nation: string) => { return fakerLocales[nation] || faker };
+    const capitalize = (name: string) => { return name.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLocaleLowerCase()).join(' ');}
+
+    const fakerInstance = getFakerByNation(nation);
+    const { firstName, lastName, birthDate, marketValue } = this.generateInformation(fakerInstance);
+
+    const firstNameCapitalized = capitalize(firstName);
+    const lastNameCapitalized = capitalize(lastName);
+
+    const formattedBirthDate = new Date(birthDate).toISOString().split('T')[0];
+
+    const attributes = this.generateAttributes(position);
+    const currentAbility = this.generateCurrentAbility(attributes, position);
+    const overall = this.generateOverall(currentAbility);
+    const potentialAbility = (await this.generatePotentialAbility(nation)).potentialAbility;
+
+    const player: Player = {
+      first_name: firstNameCapitalized, last_name: lastNameCapitalized, birth_date: formattedBirthDate, 
+      position: position, market_value: marketValue, current_ability: currentAbility, potential_ability: potentialAbility,
+      overall: overall, finishing: attributes.finishing, crossing: attributes.crossing, dribbling: attributes.dribbling,
+      heading: attributes.heading, tackling: attributes.tackling, marking: attributes.marking,
+      passing: attributes.passing, free_kick: attributes.free_kick, acceleration: attributes.acceleration,
+      agility: attributes.agility, strength: attributes.strength, jumping: attributes.jumping,
+      vision: attributes.vision, decision: attributes.decision, positioning: attributes.positioning,
+      antecipation: attributes.antecipation, aggression: attributes.aggression, reflexes: attributes.reflexes, 
+      handling: attributes.handling, diving: attributes.diving, nation_id: nation_id
+    }
+
+    const playerId = (await PlayerModel.insertPlayer(player)).lastInsertRowid;
   }
 }
 
