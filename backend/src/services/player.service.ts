@@ -10,7 +10,7 @@ class PlayerService {
     return Math.floor(Math.random() * (maximumAttribute - minimumAttribute + 1)) + minimumAttribute;
   }
 
-  static async generateAttributes(position: Position) {
+  static generateAttributes(position: Position) {
     const playerAttribute: Record<string, number> = {};
 
     for (const attribute in attributesRange[position]) {
