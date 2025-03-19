@@ -10,14 +10,20 @@ class PlayerModel {
         potential_ability, overall, finishing, crossing, dribbling, heading, 
         tackling, marking, passing, free_kick, acceleration, agility, 
         strength, jumping, vision, decision, positioning, antecipation, 
-        aggression, reflexes, handling, diving, fatigue, nation_id
+        aggression, reflexes, handling, diving, nation_id, fatigue
       ) VALUES (
         ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
         ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
       )
     `);
 
-    const insertPlayerResult = databaseStatement.run(player);
+    const insertPlayerResult = databaseStatement.run(
+      player.first_name, player.last_name, player.birth_date, player.position, player.market_value, player.current_ability,
+      player.potential_ability, player.overall, player.finishing, player.crossing, player.dribbling, player.heading,
+      player.tackling, player.marking, player.passing, player.free_kick, player.acceleration, player.agility,
+      player.strength, player.jumping, player.vision, player.decision, player.position, player.antecipation,
+      player.aggression, player.reflexes, player.handling, player.diving, player.nation_id, 0
+    );
     return insertPlayerResult;
   };
 
