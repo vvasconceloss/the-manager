@@ -10,3 +10,9 @@ export type Club = {
   nation_id: number,
   stadium_id: number,
 }
+
+export type ClubTransaction = {
+  type: string,
+  date: string,
+  value: number,
+}
