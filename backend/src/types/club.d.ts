@@ -1,4 +1,5 @@
 export type Club = {
+  id: number,
   name: string,
   foundend_year: number,
   reputation: number,
