@@ -1,4 +1,4 @@
-INSERT INTO club (id, name, founded_yeart, reputation, balance, budget, salaries, is_nation, image_logo, nation_id, stadium_id) VALUES
+INSERT INTO club (id, name, founded_year, reputation, balance, budget, salaries, is_nation, image_logo, nation_id, stadium_id) VALUES
 (1, 'Arsenal', 1886, 930, 0, 0, 0, 0, '', 4, 1),
 (2, 'Aston Villa', 1874, 750, 0, 0, 0, 0, '', 4, 2),
 (3, 'Bournemouth', 1899, 550, 0, 0, 0, 0, '', 4, 3),
