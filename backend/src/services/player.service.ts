@@ -1,9 +1,10 @@
+import ClubModel from "../models/club.model";
 import NationService from "./nation.service";
-import type { Player } from "../types/player";
 import { Faker, faker } from "@faker-js/faker";
 import PlayerModel from "../models/player.model";
 import fakerLocales from "../data/faker-locations";
 import attributesRange from "../data/attributes-range";
+import type { Player, PlayerContract } from "../types/player";
 
 type Position = keyof typeof attributesRange;
 
@@ -109,7 +110,42 @@ class PlayerService {
       handling: attributes.handling, diving: attributes.diving, nation_id: nation_id
     }
 
-    const playerId = (await PlayerModel.insertPlayer(player)).lastInsertRowid;
+    const playerId = (await PlayerModel.insertPlayer(player)).lastInsertRowid as number;
+  }
+
+  static async generatePlayerContract(clubId: number, playerId: number) {
+    const playerInformation = await PlayerModel.fetchInformation(playerId) as Player;
+    const clubInformation = await ClubModel.fetchInformation(clubId) as { id: number, reputation: number, salaries: number };
+
+    const salaryBudget = clubInformation.salaries;
+
+    let baseSalary;
+    if (clubInformation.reputation >= 800) baseSalary = Math.min(100_000, salaryBudget * 0.2);
+    else if (clubInformation.reputation >= 600) baseSalary = Math.min(50_000, salaryBudget * 0.15);
+    else if (clubInformation.reputation >= 400) baseSalary = Math.min(20_000, salaryBudget * 0.1);
+    else if (clubInformation.reputation >= 200) baseSalary = Math.min(10_000, salaryBudget * 0.05);
+    else baseSalary = Math.min(3_000, salaryBudget * 0.02);
+
+    const randomFactor = 0.8 + Math.random() * 0.4;
+    const playerSalary = baseSalary * (1 + playerInformation.current_ability / 150) * randomFactor;
+
+    const weeklySalary = Math.round(playerSalary / 4);
+    const contractDurationYears = Math.max(1, Math.min(5, Math.floor((playerInformation.current_ability / 20) + (clubInformation.reputation / 250))));
+
+    const startDate = new Date(2023, 6, 1);
+    const maximumStartDate = new Date(2025, 4, 31);
+    const randomTimeOffset = Math.random() * (maximumStartDate.getTime() - startDate.getTime());
+    const contractStartDate = new Date(startDate.getTime() + randomTimeOffset);
+
+    const contractEndDate = new Date(contractStartDate);
+    contractEndDate.setFullYear(contractEndDate.getFullYear() + contractDurationYears);
+
+    const playerContract: PlayerContract = { 
+      salary: weeklySalary, start_date: contractStartDate.toISOString().split("T")[0],
+      end_date: contractEndDate.toISOString().split("T")[0], club_id: clubInformation.id, player_id: playerId
+    };
+
+    return playerContract;
   }
 }
 
