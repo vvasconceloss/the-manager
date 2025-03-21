@@ -11,6 +11,13 @@ export type Club = {
   stadium_id: number,
 }
 
+export type ClubFinance = {
+  club_id: number,
+  balance: number,
+  budget: number,
+  salaries: number
+}
+
 export type ClubTransaction = {
   type: string,
   date: string,
