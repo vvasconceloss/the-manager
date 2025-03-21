@@ -81,38 +81,6 @@ class PlayerService {
     return { potentialAbility };
   }
 
-  static async generatePlayerData(nation: string, nation_id: number, position: Position) {
-    const getFakerByNation = (nation: string) => { return fakerLocales[nation] || faker };
-    const capitalize = (name: string) => { return name.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLocaleLowerCase()).join(' ');}
-
-    const fakerInstance = getFakerByNation(nation);
-    const { firstName, lastName, birthDate, marketValue } = this.generateInformation(fakerInstance);
-
-    const firstNameCapitalized = capitalize(firstName);
-    const lastNameCapitalized = capitalize(lastName);
-
-    const formattedBirthDate = new Date(birthDate).toISOString().split('T')[0];
-
-    const attributes = this.generateAttributes(position);
-    const currentAbility = this.generateCurrentAbility(attributes, position);
-    const overall = this.generateOverall(currentAbility);
-    const potentialAbility = (await this.generatePotentialAbility(nation)).potentialAbility;
-
-    const player: Player = {
-      first_name: firstNameCapitalized, last_name: lastNameCapitalized, birth_date: formattedBirthDate, 
-      position: position, market_value: marketValue, current_ability: currentAbility, potential_ability: potentialAbility,
-      overall: overall, finishing: attributes.finishing, crossing: attributes.crossing, dribbling: attributes.dribbling,
-      heading: attributes.heading, tackling: attributes.tackling, marking: attributes.marking,
-      passing: attributes.passing, free_kick: attributes.free_kick, acceleration: attributes.acceleration,
-      agility: attributes.agility, strength: attributes.strength, jumping: attributes.jumping,
-      vision: attributes.vision, decision: attributes.decision, positioning: attributes.positioning,
-      antecipation: attributes.antecipation, aggression: attributes.aggression, reflexes: attributes.reflexes, 
-      handling: attributes.handling, diving: attributes.diving, nation_id: nation_id
-    }
-
-    const playerId = (await PlayerModel.insertPlayer(player)).lastInsertRowid as number;
-  }
-
   static async generatePlayerContract(clubId: number, playerId: number) {
     const playerInformation = await PlayerModel.fetchInformation(playerId) as Player;
     const clubInformation = await ClubModel.fetchInformation(clubId) as { id: number, reputation: number, salaries: number };
@@ -145,7 +113,40 @@ class PlayerService {
       end_date: contractEndDate.toISOString().split("T")[0], club_id: clubInformation.id, player_id: playerId
     };
 
-    return playerContract;
+    await PlayerModel.insertContract(playerContract);
+  }
+
+  static async generatePlayerData(nation: string, nation_id: number, position: Position) {
+    const getFakerByNation = (nation: string) => { return fakerLocales[nation] || faker };
+    const capitalize = (name: string) => { return name.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLocaleLowerCase()).join(' ');}
+
+    const fakerInstance = getFakerByNation(nation);
+    const { firstName, lastName, birthDate, marketValue } = this.generateInformation(fakerInstance);
+
+    const firstNameCapitalized = capitalize(firstName);
+    const lastNameCapitalized = capitalize(lastName);
+
+    const formattedBirthDate = new Date(birthDate).toISOString().split('T')[0];
+
+    const attributes = this.generateAttributes(position);
+    const currentAbility = this.generateCurrentAbility(attributes, position);
+    const overall = this.generateOverall(currentAbility);
+    const potentialAbility = (await this.generatePotentialAbility(nation)).potentialAbility;
+
+    const player: Player = {
+      first_name: firstNameCapitalized, last_name: lastNameCapitalized, birth_date: formattedBirthDate, 
+      position: position, market_value: marketValue, current_ability: currentAbility, potential_ability: potentialAbility,
+      overall: overall, finishing: attributes.finishing, crossing: attributes.crossing, dribbling: attributes.dribbling,
+      heading: attributes.heading, tackling: attributes.tackling, marking: attributes.marking,
+      passing: attributes.passing, free_kick: attributes.free_kick, acceleration: attributes.acceleration,
+      agility: attributes.agility, strength: attributes.strength, jumping: attributes.jumping,
+      vision: attributes.vision, decision: attributes.decision, positioning: attributes.positioning,
+      antecipation: attributes.antecipation, aggression: attributes.aggression, reflexes: attributes.reflexes, 
+      handling: attributes.handling, diving: attributes.diving, nation_id: nation_id
+    }
+
+    const playerId = (await PlayerModel.insertPlayer(player)).lastInsertRowid as number;
+    const playerContract = await this.generatePlayerContract(1, playerId);
   }
 }
 
