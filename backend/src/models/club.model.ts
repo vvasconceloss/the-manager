@@ -1,5 +1,5 @@
 import connectDatabase from "../config/database";
-import type { ClubFinance } from "../types/club";
+import type { Club, ClubFinance } from "../types/club";
 
 class ClubModel {
   static fetchInformation = async (clubId: number) => {
@@ -20,6 +20,13 @@ class ClubModel {
     `);
 
     return databaseStatement.get(clubId);
+  }
+
+  static fetchAllByNation = async (nationId: number) => {
+    const databaseInstance = await connectDatabase();
+    const databaseStatement = databaseInstance.prepare(`SELECT * FROM club WHERE club.nation_id = ?`);
+
+    return databaseStatement.all(nationId) as Club[];
   }
 
   static updateFinance = async (clubFinance: ClubFinance) => {
