@@ -44,14 +44,11 @@ class PlayerModel {
   static insertContract = async (playerContract: PlayerContract) => {
     const databaseInstance = await connectDatabase();
     const databaseStatement = databaseInstance.prepare(`
-      INSERT INTO player_contract (
-        id, salary, start_date, end_date, player_id, club_id
-      ) VALUES (
-        ?, ?, ?, ?, ?, ?
-      )
+      INSERT INTO player_contract (salary, start_date, end_date, player_id, club_id) 
+      VALUES (?, ?, ?, ?, ?)
     `);
 
-    const insertContractResult = databaseStatement.run(playerContract);
+    const insertContractResult = databaseStatement.run(playerContract.salary, playerContract.start_date, playerContract.end_date, playerContract.player_id, playerContract.club_id);
     return insertContractResult;
   }
 }
