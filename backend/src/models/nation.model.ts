@@ -8,6 +8,13 @@ class NationModel {
 
     return databaseStatement.all() as Nation[];
   }
+
+  static fetchInformation = async (nation: string) => {
+    const databaseInstance = await connectDatabase();
+    const databaseStatement = databaseInstance.prepare("SELECT * FROM nation WHERE nation.name = ?");
+
+    return databaseStatement.get(nation) as Nation;
+  }
 }
 
 export default NationModel;
