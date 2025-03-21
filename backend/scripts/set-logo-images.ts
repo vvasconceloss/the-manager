@@ -51,9 +51,7 @@ const insertImagesAutomatically = async () => {
   try {
     const directories = fs.readdirSync(GRAPHICS_FOLDER_PATH, { withFileTypes: true });
 
-    for (const dir of directories) {
-      logger.info(dir)
-      
+    for (const dir of directories) {      
       if (dir.isDirectory()) {
         const folderPath = path.join(GRAPHICS_FOLDER_PATH, dir.name);
   
@@ -70,4 +68,4 @@ const insertImagesAutomatically = async () => {
   }
 };
 
-insertImagesAutomatically().then(() => { logger.info(`Inserting finished images`) });
+export default insertImagesAutomatically;
