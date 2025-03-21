@@ -1,4 +1,5 @@
 import connectDatabase from "../config/database";
+import type { ClubFinance } from "../types/club";
 
 class ClubModel {
   static fetchInformation = async (clubId: number) => {
@@ -21,6 +22,16 @@ class ClubModel {
     return databaseStatement.get(clubId);
   }
 
+  static updateFinance = async (clubFinance: ClubFinance) => {
+    const databaseInstance = await connectDatabase();
+    const databaseStatement = databaseInstance.prepare(`
+      UPDATE club 
+        SET balance = ?, budget = ?, salaries = ?
+        WHERE club.id = ?
+    `);
+
+    return databaseStatement.run(clubFinance.balance, clubFinance.budget, clubFinance.salaries, clubFinance.club_id);
+  }
 }
 
 export default ClubModel;
