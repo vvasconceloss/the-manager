@@ -1,0 +1,19 @@
+[workspace]
+resolver = "1"
+members = ["crates/core"]
+
+[workspace.package]
+edition = "2024"
+version = "0.1.0"
+authors = ["Victor Vasconcelos <vvasconcelos.dev@gmail.com>"]
+
+[workspace.dependencies]
+rand = "0.9.2"
+dirs = "6.0.0"
+dotenv = "0.15.0"
+thiserror = "2.0.17"
+rust_decimal = "1.39.0"
+
+serde_json = "1"
+serde = { version = "1", features = ["derive"] }
+rusqlite = { version = "0.37.0", features = ["bundled"] }
