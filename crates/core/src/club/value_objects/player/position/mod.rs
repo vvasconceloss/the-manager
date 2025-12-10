@@ -1,2 +1,2 @@
-pub mod position;
 pub mod position_type;
+pub mod positions;

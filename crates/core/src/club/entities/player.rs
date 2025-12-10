@@ -1,6 +1,6 @@
 use crate::{
     club::value_objects::player::{
-        attributes::PlayerAttributes, position::position::PlayerPositions,
+        attributes::PlayerAttributes, position::positions::PlayerPositions,
     },
     shared::value_objects::{birth_date::BirthDate, person_name::PersonName},
 };
