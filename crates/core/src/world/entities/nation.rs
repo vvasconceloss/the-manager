@@ -1,7 +1,7 @@
 use crate::{
-    shared::reputation::Reputation,
-    world::nation::{
-        confederation::Confederation, nation_code::NationCode, nation_name::NationName,
+    shared::value_objects::reputation::Reputation,
+    world::value_objects::nation::{
+        code::NationCode, confederation::Confederation, name::NationName,
     },
 };
 use serde::{Deserialize, Serialize};

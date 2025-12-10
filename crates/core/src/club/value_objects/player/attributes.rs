@@ -1,4 +1,4 @@
-use crate::shared::attribute::Attribute;
+use crate::shared::value_objects::attribute::Attribute;
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Clone, Deserialize, Serialize)]

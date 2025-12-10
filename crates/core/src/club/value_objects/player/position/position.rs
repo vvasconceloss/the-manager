@@ -1,4 +1,6 @@
-use crate::{club::player::position_type::PositionType, errors::CoreError};
+use crate::{
+    club::value_objects::player::position::position_type::PositionType, errors::CoreError,
+};
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Clone, Deserialize, Serialize, PartialEq, Eq)]

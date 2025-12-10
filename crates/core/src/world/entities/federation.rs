@@ -1,4 +1,7 @@
-use crate::{shared::reputation::Reputation, world::federation::federation_name::FederationName};
+use crate::{
+    shared::value_objects::reputation::Reputation,
+    world::value_objects::federation::name::FederationName,
+};
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Clone, Serialize, Deserialize)]

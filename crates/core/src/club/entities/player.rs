@@ -1,6 +1,8 @@
 use crate::{
-    club::player::{attributes::PlayerAttributes, position::PlayerPositions},
-    shared::{birth_date::BirthDate, person_name::PersonName},
+    club::value_objects::player::{
+        attributes::PlayerAttributes, position::position::PlayerPositions,
+    },
+    shared::value_objects::{birth_date::BirthDate, person_name::PersonName},
 };
 use serde::{Deserialize, Serialize};
 

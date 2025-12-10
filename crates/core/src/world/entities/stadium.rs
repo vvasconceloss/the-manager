@@ -1,4 +1,4 @@
-use crate::world::stadium::stadium_name::StadiumName;
+use crate::world::value_objects::stadium::name::StadiumName;
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
