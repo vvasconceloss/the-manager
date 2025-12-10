@@ -1,2 +1,2 @@
 pub mod competition;
-pub mod league_table;
+pub mod league;
