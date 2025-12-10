@@ -6,6 +6,12 @@ pub struct MatchStatistics {
     pub away_score: u8,
 }
 
+impl Default for MatchStatistics {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl MatchStatistics {
     pub fn new() -> Self {
         MatchStatistics {

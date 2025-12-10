@@ -1,4 +1,6 @@
-use crate::competition::value_objects::r#match::{statistics::MatchStatistics, status::MatchStatus};
+use crate::competition::value_objects::r#match::{
+    statistics::MatchStatistics, status::MatchStatus,
+};
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -9,7 +11,7 @@ pub struct Match {
     pub competition_id: u64,
     pub date: String,
     pub status: MatchStatus,
-    pub statistics: MatchStatistics
+    pub statistics: MatchStatistics,
 }
 
 impl Match {
@@ -28,7 +30,7 @@ impl Match {
             competition_id,
             date,
             status,
-            statistics: MatchStatistics::new()
+            statistics: MatchStatistics::default(),
         }
     }
 }
