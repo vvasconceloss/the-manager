@@ -1,6 +1,5 @@
-use serde::{Deserialize, Serialize};
-
 use crate::errors::CoreError;
+use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Clone, Deserialize, Serialize, PartialEq, Eq)]
 pub enum PositionGroup {
