@@ -1,10 +1,11 @@
-use crate::competition::value_objects::league::row::LeagueTableRow;
+use crate::competition::value_objects::league::{row::LeagueTableRow, schedule::LeagueSchedule};
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct League {
     pub id: u64,
     pub competition_id: u64,
+    pub schedule: LeagueSchedule,
     pub table: Vec<LeagueTableRow>,
 }
 
@@ -13,6 +14,7 @@ impl League {
         Self {
             id,
             competition_id,
+            schedule: LeagueSchedule::new(),
             table: Self::generate_rows(teams),
         }
     }
