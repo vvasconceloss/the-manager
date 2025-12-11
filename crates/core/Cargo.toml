@@ -6,6 +6,7 @@ authors.workspace = true
 
 [dependencies]
 rand = { workspace = true }
+chrono = { workspace = true }
 thiserror = { workspace = true }
 rust_decimal = { workspace = true }
 
