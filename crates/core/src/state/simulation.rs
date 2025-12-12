@@ -1,12 +1,16 @@
+use chrono::NaiveDate;
+
 #[derive(Debug, Clone)]
 pub struct SimulationState {
-    pub day: u8,
-    pub month: u8,
-    pub year: u64,
+    pub date: NaiveDate,
 }
 
 impl SimulationState {
-    pub fn new(day: u8, month: u8, year: u64) -> Self {
-        SimulationState { day, month, year }
+    pub fn new(date: NaiveDate) -> Self {
+        SimulationState { date }
+    }
+
+    pub fn advance_day(&mut self) {
+        self.date = self.date.succ_opt().unwrap();
     }
 }
