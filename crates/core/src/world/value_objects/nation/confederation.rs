@@ -1,7 +1,6 @@
 use crate::errors::CoreError;
-use serde::{Deserialize, Serialize};
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone)]
 pub struct Confederation {
     pub name: String,
     pub acronym: String,

@@ -1,7 +1,6 @@
 use crate::errors::CoreError;
-use serde::{Deserialize, Serialize};
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone)]
 pub struct PersonName {
     pub last_name: String,
     pub first_name: String,

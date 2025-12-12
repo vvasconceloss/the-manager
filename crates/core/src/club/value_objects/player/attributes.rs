@@ -1,7 +1,6 @@
 use crate::shared::value_objects::attribute::Attribute;
-use serde::{Deserialize, Serialize};
 
-#[derive(Debug, Clone, Deserialize, Serialize)]
+#[derive(Debug, Clone)]
 pub struct Mental {
     pub vision: Attribute,
     pub decision: Attribute,
@@ -11,7 +10,7 @@ pub struct Mental {
     pub concentration: Attribute,
 }
 
-#[derive(Debug, Clone, Deserialize, Serialize)]
+#[derive(Debug, Clone)]
 pub struct Physical {
     pub pace: Attribute,
     pub agility: Attribute,
@@ -20,7 +19,7 @@ pub struct Physical {
     pub strength: Attribute,
 }
 
-#[derive(Debug, Clone, Deserialize, Serialize)]
+#[derive(Debug, Clone)]
 pub struct Technical {
     pub marking: Attribute,
     pub heading: Attribute,
@@ -32,21 +31,21 @@ pub struct Technical {
     pub first_touch: Attribute,
 }
 
-#[derive(Debug, Clone, Deserialize, Serialize)]
+#[derive(Debug, Clone)]
 pub struct SetPieces {
     pub corners: Attribute,
     pub penalties: Attribute,
     pub free_kicks: Attribute,
 }
 
-#[derive(Debug, Clone, Deserialize, Serialize)]
+#[derive(Debug, Clone)]
 pub struct Goalkeeping {
     pub handling: Attribute,
     pub reflexes: Attribute,
     pub distribution: Attribute,
 }
 
-#[derive(Debug, Clone, Deserialize, Serialize)]
+#[derive(Debug, Clone)]
 pub struct PlayerAttributes {
     pub mental: Mental,
     pub physical: Physical,

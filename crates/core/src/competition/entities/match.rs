@@ -1,9 +1,8 @@
 use crate::competition::value_objects::r#match::{
     statistics::MatchStatistics, status::MatchStatus,
 };
-use serde::{Deserialize, Serialize};
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone)]
 pub struct Match {
     pub id: u64,
     pub home_id: u64,

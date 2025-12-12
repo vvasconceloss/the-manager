@@ -1,7 +1,6 @@
 use crate::club::entities::player::Player;
-use serde::{Deserialize, Serialize};
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone)]
 pub struct Team {
     pub id: u64,
     pub club_id: u64,

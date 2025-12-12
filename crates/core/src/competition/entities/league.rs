@@ -1,7 +1,6 @@
 use crate::competition::value_objects::league::{row::LeagueTableRow, schedule::LeagueSchedule};
-use serde::{Deserialize, Serialize};
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone)]
 pub struct League {
     pub id: u64,
     pub competition_id: u64,

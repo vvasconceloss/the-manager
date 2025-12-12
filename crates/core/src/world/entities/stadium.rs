@@ -1,7 +1,6 @@
 use crate::world::value_objects::stadium::name::StadiumName;
-use serde::{Deserialize, Serialize};
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone)]
 pub struct Stadium {
     pub id: u64,
     pub nation_id: u64,

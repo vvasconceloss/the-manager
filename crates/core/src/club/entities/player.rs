@@ -4,9 +4,8 @@ use crate::{
     },
     shared::value_objects::{birth_date::BirthDate, person_name::PersonName},
 };
-use serde::{Deserialize, Serialize};
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone)]
 pub struct Player {
     pub id: u64,
     pub nation_id: u64,

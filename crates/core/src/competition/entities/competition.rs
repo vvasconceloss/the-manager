@@ -2,9 +2,8 @@ use crate::{
     competition::value_objects::competition::{comp_type::CompetitionType, name::CompetitionName},
     shared::value_objects::reputation::Reputation,
 };
-use serde::{Deserialize, Serialize};
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone)]
 pub struct Competition {
     pub id: u64,
     pub nation_id: u64,

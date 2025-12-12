@@ -1,7 +1,6 @@
 use crate::errors::CoreError;
-use serde::{Deserialize, Serialize};
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone)]
 pub struct FederationName(pub String);
 
 impl FederationName {

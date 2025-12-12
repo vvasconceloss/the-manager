@@ -1,9 +1,8 @@
 use crate::{
     club::value_objects::club::name::ClubName, shared::value_objects::reputation::Reputation,
 };
-use serde::{Deserialize, Serialize};
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone)]
 pub struct Club {
     pub id: u64,
     pub nation_id: u64,

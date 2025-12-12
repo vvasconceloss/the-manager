@@ -1,15 +1,14 @@
 use rust_decimal::Decimal;
-use serde::{Deserialize, Serialize};
 use std::ops::{Add, Div, Mul, Sub};
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub enum Currency {
     EUR,
     GBP,
     USD,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Money {
     pub amount: Decimal,
     pub currency: Currency,

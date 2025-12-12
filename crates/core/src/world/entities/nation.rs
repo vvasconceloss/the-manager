@@ -4,9 +4,8 @@ use crate::{
         code::NationCode, confederation::Confederation, name::NationName,
     },
 };
-use serde::{Deserialize, Serialize};
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone)]
 pub struct Nation {
     pub id: u64,
     pub continent_id: u64,

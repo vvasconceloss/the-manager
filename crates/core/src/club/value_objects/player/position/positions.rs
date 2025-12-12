@@ -1,9 +1,8 @@
 use crate::{
     club::value_objects::player::position::position_type::PositionType, errors::CoreError,
 };
-use serde::{Deserialize, Serialize};
 
-#[derive(Debug, Clone, Deserialize, Serialize, PartialEq, Eq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Position {
     pub proficiency: u8,
     pub position: PositionType,
@@ -29,7 +28,7 @@ impl Position {
     }
 }
 
-#[derive(Debug, Clone, Deserialize, Serialize, PartialEq, Eq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct PlayerPositions {
     pub positions: Vec<Position>,
 }
