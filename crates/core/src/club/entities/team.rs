@@ -17,4 +17,12 @@ impl Team {
             players,
         }
     }
+
+    pub fn add_player(&mut self, player: Player) {
+        self.players.push(player);
+    }
+
+    pub fn remove_player(&mut self, player_id: u64) {
+        self.players.retain(|player| player.id != player_id);
+    }
 }
