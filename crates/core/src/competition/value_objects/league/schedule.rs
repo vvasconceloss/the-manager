@@ -12,6 +12,12 @@ pub struct LeagueSchedule {
     pub rounds: Vec<ScheduleRound>,
 }
 
+impl Default for LeagueSchedule {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl LeagueSchedule {
     pub fn new() -> Self {
         LeagueSchedule { rounds: Vec::new() }
