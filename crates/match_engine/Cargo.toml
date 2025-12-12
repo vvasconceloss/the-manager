@@ -1,0 +1,14 @@
+[package]
+name = "match_engine"
+edition.workspace = true
+version.workspace = true
+authors.workspace = true
+
+[dependencies]
+rand = { workspace = true }
+chrono = { workspace = true }
+thiserror = { workspace = true }
+rust_decimal = { workspace = true }
+
+serde = { workspace = true }
+serde_json = { workspace = true }
