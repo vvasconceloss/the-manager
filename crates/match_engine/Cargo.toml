@@ -5,6 +5,8 @@ version.workspace = true
 authors.workspace = true
 
 [dependencies]
+core_lib = { path = "../core/" }
+
 rand = { workspace = true }
 chrono = { workspace = true }
 thiserror = { workspace = true }
