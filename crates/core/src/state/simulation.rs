@@ -19,7 +19,10 @@ impl SimulationState {
     }
 
     pub fn advance_day(&mut self) {
-        self.date = self.date.succ_opt().unwrap();
+        self.date = match self.date.succ_opt() {
+            Some(date) => date,
+            None => self.date,
+        }
     }
 
     pub fn is_before(&self, other: NaiveDate) -> bool {
