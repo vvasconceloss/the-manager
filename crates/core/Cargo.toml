@@ -1,5 +1,5 @@
 [package]
-name = "core"
+name = "core_lib"
 edition.workspace = true
 version.workspace = true
 authors.workspace = true
