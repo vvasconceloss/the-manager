@@ -1,6 +1,6 @@
 use crate::{
     club::entities::{club::Club, player::Player},
-    competition::entities::competition::Competition,
+    competition::entities::{competition::Competition, league::League},
     state::simulation::SimulationState,
 };
 use chrono::NaiveDate;
@@ -9,6 +9,7 @@ use chrono::NaiveDate;
 pub struct GameState {
     pub clubs: Vec<Club>,
     pub players: Vec<Player>,
+    pub leagues: Vec<League>,
     pub competitions: Vec<Competition>,
 
     pub simulation: SimulationState,
@@ -19,6 +20,7 @@ impl GameState {
         GameState {
             clubs: Vec::new(),
             players: Vec::new(),
+            leagues: Vec::new(),
             competitions: Vec::new(),
             simulation: SimulationState::new(start_date),
         }
