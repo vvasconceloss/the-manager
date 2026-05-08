@@ -3828,6 +3828,7 @@ name = "the-manager"
 version = "0.1.0"
 dependencies = [
  "chrono",
+ "dirs",
  "rand 0.10.1",
  "rayon",
  "rusqlite",
