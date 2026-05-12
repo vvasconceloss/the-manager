@@ -15,7 +15,8 @@ pub fn run() {
         .plugin(tauri_plugin_opener::init())
         .invoke_handler(tauri::generate_handler![
             commands::save::list_saves,
-            commands::save::new_game
+            commands::save::new_game,
+            commands::save::get_game_state
         ])
         .run(tauri::generate_context!())
         .expect("failed to start the application");
