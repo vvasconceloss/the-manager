@@ -162,7 +162,7 @@ pub fn get_game_state(state: State<AppState>) -> Result<GameState, AppError> {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use std::fs::{self, write};
+    use std::fs::write;
     use tempfile::TempDir;
 
     #[test]
