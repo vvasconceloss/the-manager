@@ -159,6 +159,51 @@ pub fn get_game_state(state: State<AppState>) -> Result<GameState, AppError> {
     })
 }
 
+pub fn load_game_from_path(path: &str) -> Result<SaveInfo, AppError> {
+    let save_path = PathBuf::from(path);
+
+    if !save_path.exists() {
+        return Err(AppError::SaveNotFound(format!(
+            "Save file not found: {}",
+            path
+        )));
+    }
+
+    let mut conn = open(save_path.to_string_lossy().as_ref())?;
+    run(&mut conn)?;
+
+    let metadata = metadata(&save_path).map_err(|e| AppError::Io(e.to_string()))?;
+    let modified: DateTime<Utc> = metadata
+        .modified()
+        .map_err(|e| AppError::Io(e.to_string()))?
+        .into();
+
+    let name = save_path
+        .file_stem()
+        .and_then(|n| n.to_str())
+        .map(|n| n.to_string())
+        .ok_or_else(|| AppError::Io("Invalid save file name".to_string()))?;
+
+    Ok(SaveInfo {
+        name,
+        path: path.to_string(),
+        modified_at: modified,
+    })
+}
+
+#[tauri::command]
+pub fn load_game(path: String, state: State<AppState>) -> Result<SaveInfo, AppError> {
+    let save_info = load_game_from_path(&path)?;
+
+    let mut conn = open(&path).map_err(|e| AppError::Database(e.to_string()))?;
+    run(&mut conn).map_err(|e| AppError::Migration(e.to_string()))?;
+
+    let mut db_guard = state.db.lock().map_err(|_| AppError::LockPoisoned)?;
+    *db_guard = Some(conn);
+
+    Ok(save_info)
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -224,5 +269,32 @@ mod tests {
 
         let saves = list_saves_in_dir(&temp_dir.path().to_path_buf()).unwrap();
         assert_eq!(saves.len(), 2);
+    }
+
+    #[test]
+    fn test_load_game_from_path_nonexistent_returns_error() {
+        let result = load_game_from_path("/nonexistent/path.tm");
+        assert!(result.is_err());
+    }
+
+    #[test]
+    fn test_load_game_from_path_existing_save_returns_info() {
+        use crate::db::migrations::run;
+        use rusqlite::Connection;
+
+        let temp_dir = TempDir::new().unwrap();
+        let save_path = temp_dir.path().join("test-save.tm");
+
+        {
+            let mut conn = Connection::open(&save_path).unwrap();
+            run(&mut conn).unwrap();
+        }
+
+        let result = load_game_from_path(&save_path.to_string_lossy());
+
+        assert!(result.is_ok());
+        let save_info = result.unwrap();
+        assert_eq!(save_info.name, "test-save");
+        assert_eq!(save_info.path, save_path.to_string_lossy());
     }
 }
