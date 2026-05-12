@@ -1,8 +1,13 @@
+use crate::db::connection::open;
+use crate::db::migrations::run;
 use crate::errors::AppError;
+use crate::state::AppState;
 use chrono::{DateTime, Utc};
+use dirs::document_dir;
 use serde::{Deserialize, Serialize};
-use std::fs;
+use std::fs::{self, metadata};
 use std::path::PathBuf;
+use tauri::State;
 
 const SAVE_EXTENSION: &str = "tm";
 const SAVE_DIR_NAME: &str = "TheManager/saves";
@@ -15,9 +20,60 @@ pub struct SaveInfo {
 }
 
 fn get_saves_dir() -> Result<PathBuf, AppError> {
-    let documents = dirs::document_dir()
+    let documents = document_dir()
         .ok_or_else(|| AppError::Io("Could not find documents directory".to_string()))?;
     Ok(documents.join(SAVE_DIR_NAME))
+}
+
+fn normalize_save_name(name: &str) -> String {
+    name.to_lowercase()
+        .chars()
+        .map(|c| if c.is_alphanumeric() { c } else { '-' })
+        .collect::<String>()
+        .split('-')
+        .filter(|s| !s.is_empty())
+        .collect::<Vec<_>>()
+        .join("-")
+}
+
+#[tauri::command]
+pub fn new_game(name: String, state: State<AppState>) -> Result<SaveInfo, AppError> {
+    if name.trim().is_empty() {
+        return Err(AppError::Domain("Save name cannot be empty".to_string()));
+    }
+
+    let save_dir = get_saves_dir()?;
+    if !save_dir.exists() {
+        fs::create_dir_all(&save_dir).map_err(|e| AppError::Io(e.to_string()))?;
+    }
+
+    let normalized = normalize_save_name(&name);
+    let save_path = save_dir.join(format!("{}.tm", normalized));
+
+    if save_path.exists() {
+        return Err(AppError::Domain(format!(
+            "Save '{}' already exists",
+            normalized
+        )));
+    }
+
+    let mut conn = open(save_path.to_string_lossy().as_ref())?;
+    run(&mut conn)?;
+
+    let mut db_guard = state.db.lock().map_err(|_| AppError::LockPoisoned)?;
+    *db_guard = Some(conn);
+
+    let metadata = metadata(&save_path).map_err(|e| AppError::Io(e.to_string()))?;
+    let modified: DateTime<Utc> = metadata
+        .modified()
+        .map_err(|e| AppError::Io(e.to_string()))?
+        .into();
+
+    Ok(SaveInfo {
+        name: normalized,
+        path: save_path.to_string_lossy().to_string(),
+        modified_at: modified,
+    })
 }
 
 pub fn list_saves_in_dir(dir: &PathBuf) -> Result<Vec<SaveInfo>, AppError> {
@@ -50,7 +106,7 @@ pub fn list_saves_in_dir(dir: &PathBuf) -> Result<Vec<SaveInfo>, AppError> {
             .map(|n| n.to_string())
             .ok_or_else(|| AppError::Io("Invalid save file name".to_string()))?;
 
-        let metadata = fs::metadata(&path).map_err(|e| AppError::Io(e.to_string()))?;
+        let metadata = metadata(&path).map_err(|e| AppError::Io(e.to_string()))?;
         let modified: DateTime<Utc> = metadata
             .modified()
             .map_err(|e| AppError::Io(e.to_string()))?
@@ -81,6 +137,29 @@ mod tests {
     use super::*;
     use std::fs;
     use tempfile::TempDir;
+
+    #[test]
+    fn test_normalize_save_name_simple() {
+        assert_eq!(normalize_save_name("My Save"), "my-save");
+    }
+
+    #[test]
+    fn test_normalize_save_name_with_spaces() {
+        assert_eq!(normalize_save_name("  Test Game  "), "test-game");
+    }
+
+    #[test]
+    fn test_normalize_save_name_with_special_chars() {
+        assert_eq!(normalize_save_name("Game#1!"), "game-1");
+    }
+
+    #[test]
+    fn test_normalize_save_name_already_normalized() {
+        assert_eq!(
+            normalize_save_name("already-normalized"),
+            "already-normalized"
+        );
+    }
 
     #[test]
     fn test_list_saves_empty_dir() {
