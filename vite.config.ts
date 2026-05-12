@@ -1,5 +1,6 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
+import tailwindcss from "@tailwindcss/vite";
 import { tanstackRouter } from "@tanstack/router-plugin/vite";
 
 const host = process.env.TAURI_DEV_HOST as string | undefined;
@@ -11,6 +12,7 @@ export default defineConfig(async () => ({
       autoCodeSplitting: true,
     }),
     react(),
+    tailwindcss(),
   ],
   define: {
     __DEV__: process.env.NODE_ENV !== "production",
