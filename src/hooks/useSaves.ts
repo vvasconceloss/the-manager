@@ -1,4 +1,5 @@
 import type { SaveInfo } from "../lib/types";
+import { isTauriError } from "../lib/errors";
 import { useState, useEffect, useCallback } from "react";
 import { listSaves, newGame, loadGame } from "../lib/commands";
 
@@ -14,7 +15,12 @@ export function useSaves() {
       const data = await listSaves();
       setSaves(data);
     } catch (e) {
-      setError(e instanceof Error ? e.message : String(e));
+      const message = isTauriError(e)
+        ? e.message
+        : e instanceof Error
+          ? e.message
+          : String(e);
+      setError(message);
     } finally {
       setLoading(false);
     }
@@ -33,7 +39,11 @@ export function useSaves() {
         await load();
         return save;
       } catch (e) {
-        const message = e instanceof Error ? e.message : String(e);
+        const message = isTauriError(e)
+          ? e.message
+          : e instanceof Error
+            ? e.message
+            : String(e);
         setError(message);
         throw new Error(message);
       } finally {
@@ -50,7 +60,11 @@ export function useSaves() {
       const save = await loadGame(path);
       return save;
     } catch (e) {
-      const message = e instanceof Error ? e.message : String(e);
+      const message = isTauriError(e)
+        ? e.message
+        : e instanceof Error
+          ? e.message
+          : String(e);
       setError(message);
       throw new Error(message);
     } finally {
