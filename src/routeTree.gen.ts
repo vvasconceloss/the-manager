@@ -9,8 +9,26 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as SaveMenuRouteImport } from './routes/save-menu'
+import { Route as DashboardRouteImport } from './routes/dashboard'
+import { Route as CreateManagerRouteImport } from './routes/create-manager'
 import { Route as IndexRouteImport } from './routes/index'
 
+const SaveMenuRoute = SaveMenuRouteImport.update({
+  id: '/save-menu',
+  path: '/save-menu',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DashboardRoute = DashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CreateManagerRoute = CreateManagerRouteImport.update({
+  id: '/create-manager',
+  path: '/create-manager',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -19,28 +37,61 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/create-manager': typeof CreateManagerRoute
+  '/dashboard': typeof DashboardRoute
+  '/save-menu': typeof SaveMenuRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/create-manager': typeof CreateManagerRoute
+  '/dashboard': typeof DashboardRoute
+  '/save-menu': typeof SaveMenuRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/create-manager': typeof CreateManagerRoute
+  '/dashboard': typeof DashboardRoute
+  '/save-menu': typeof SaveMenuRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/create-manager' | '/dashboard' | '/save-menu'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/create-manager' | '/dashboard' | '/save-menu'
+  id: '__root__' | '/' | '/create-manager' | '/dashboard' | '/save-menu'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  CreateManagerRoute: typeof CreateManagerRoute
+  DashboardRoute: typeof DashboardRoute
+  SaveMenuRoute: typeof SaveMenuRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/save-menu': {
+      id: '/save-menu'
+      path: '/save-menu'
+      fullPath: '/save-menu'
+      preLoaderRoute: typeof SaveMenuRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dashboard': {
+      id: '/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof DashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/create-manager': {
+      id: '/create-manager'
+      path: '/create-manager'
+      fullPath: '/create-manager'
+      preLoaderRoute: typeof CreateManagerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -53,6 +104,9 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  CreateManagerRoute: CreateManagerRoute,
+  DashboardRoute: DashboardRoute,
+  SaveMenuRoute: SaveMenuRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
