@@ -132,10 +132,37 @@ pub fn list_saves() -> Result<Vec<SaveInfo>, AppError> {
     list_saves_in_dir(&dir)
 }
 
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct GameState {
+    pub current_date: String,
+    pub season_id: i64,
+    pub user_club_id: i64,
+    pub user_staff_id: i64,
+}
+
+#[tauri::command]
+pub fn get_game_state(state: State<AppState>) -> Result<GameState, AppError> {
+    state.with_conn(|conn| {
+        conn.query_row(
+            "SELECT current_date, season_id, user_club_id, user_staff_id FROM game_state WHERE id = 1",
+            [],
+            |row| {
+                Ok(GameState {
+                    current_date: row.get(0)?,
+                    season_id: row.get(1)?,
+                    user_club_id: row.get(2)?,
+                    user_staff_id: row.get(3)?,
+                })
+            },
+        )
+        .map_err(|e| AppError::Database(e.to_string()))
+    })
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
-    use std::fs;
+    use std::fs::{self, write};
     use tempfile::TempDir;
 
     #[test]
@@ -171,8 +198,8 @@ mod tests {
     #[test]
     fn test_list_saves_filters_non_tm_files() {
         let temp_dir = TempDir::new().unwrap();
-        fs::write(temp_dir.path().join("readme.txt"), "test").unwrap();
-        fs::write(temp_dir.path().join("data.db"), "test").unwrap();
+        write(temp_dir.path().join("readme.txt"), "test").unwrap();
+        write(temp_dir.path().join("data.db"), "test").unwrap();
 
         let saves = list_saves_in_dir(&temp_dir.path().to_path_buf()).unwrap();
         assert!(saves.is_empty());
@@ -181,9 +208,9 @@ mod tests {
     #[test]
     fn test_list_saves_returns_tm_files() {
         let temp_dir = TempDir::new().unwrap();
-        fs::write(temp_dir.path().join("save1.tm"), "test").unwrap();
-        fs::write(temp_dir.path().join("save2.tm"), "test").unwrap();
-        fs::write(temp_dir.path().join("save3.tm"), "test").unwrap();
+        write(temp_dir.path().join("save1.tm"), "test").unwrap();
+        write(temp_dir.path().join("save2.tm"), "test").unwrap();
+        write(temp_dir.path().join("save3.tm"), "test").unwrap();
 
         let saves = list_saves_in_dir(&temp_dir.path().to_path_buf()).unwrap();
         assert_eq!(saves.len(), 3);
@@ -192,8 +219,8 @@ mod tests {
     #[test]
     fn test_list_saves_ignores_uppercase_extension() {
         let temp_dir = TempDir::new().unwrap();
-        fs::write(temp_dir.path().join("save1.TM"), "test").unwrap();
-        fs::write(temp_dir.path().join("save2.Tm"), "test").unwrap();
+        write(temp_dir.path().join("save1.TM"), "test").unwrap();
+        write(temp_dir.path().join("save2.Tm"), "test").unwrap();
 
         let saves = list_saves_in_dir(&temp_dir.path().to_path_buf()).unwrap();
         assert_eq!(saves.len(), 2);
