@@ -23,3 +23,9 @@ impl From<std::io::Error> for AppError {
         Self::Io(e.to_string())
     }
 }
+
+impl From<rusqlite_migration::Error> for AppError {
+    fn from(e: rusqlite_migration::Error) -> Self {
+        Self::Migration(e.to_string())
+    }
+}
