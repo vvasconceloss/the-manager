@@ -3,9 +3,10 @@ use crate::db::migrations::run;
 use crate::errors::AppError;
 use crate::state::AppState;
 use chrono::{DateTime, Utc};
-use dirs::document_dir;
+use dirs::home_dir;
 use serde::{Deserialize, Serialize};
-use std::fs::{self, metadata};
+use std::env::var;
+use std::fs::{self, create_dir_all, metadata};
 use std::path::PathBuf;
 use tauri::State;
 
@@ -20,9 +21,12 @@ pub struct SaveInfo {
 }
 
 fn get_saves_dir() -> Result<PathBuf, AppError> {
-    let documents = document_dir()
-        .ok_or_else(|| AppError::Io("Could not find documents directory".to_string()))?;
-    Ok(documents.join(SAVE_DIR_NAME))
+    let data_home = var("XDG_DATA_HOME")
+        .map(PathBuf::from)
+        .or_else(|_| home_dir().map(|h| h.join(".local/share")).ok_or(()))
+        .map_err(|_| AppError::Io("The data directory could not be determined".to_string()))?;
+
+    Ok(data_home.join(SAVE_DIR_NAME))
 }
 
 fn normalize_save_name(name: &str) -> String {
@@ -44,7 +48,7 @@ pub fn new_game(name: String, state: State<AppState>) -> Result<SaveInfo, AppErr
 
     let save_dir = get_saves_dir()?;
     if !save_dir.exists() {
-        fs::create_dir_all(&save_dir).map_err(|e| AppError::Io(e.to_string()))?;
+        create_dir_all(&save_dir).map_err(|e| AppError::Io(e.to_string()))?;
     }
 
     let normalized = normalize_save_name(&name);
