@@ -24,6 +24,8 @@ dist-ssr
 .env
 .env.local
 
-docs/
 src-tauri/gen/
 src-tauri/target/
+
+# docs
+docs/
