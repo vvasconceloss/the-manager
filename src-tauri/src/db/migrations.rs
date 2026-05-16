@@ -1,5 +1,5 @@
 use rusqlite::Connection;
-use rusqlite_migration::{Error, M, Migrations};
+use rusqlite_migration::{Error, Migrations, M};
 
 pub fn run(conn: &mut Connection) -> Result<(), Error> {
     let migrations = Migrations::new(vec![M::up(include_str!(
